@@ -230,6 +230,13 @@ df_type=data.frame("filetype"=c('bam',"fastq","cram","sff","reference_fasta","Ox
 #For Archer Fusion library strategies, they are not recognized in the SRA, so they will be turned into "OTHER". 
 SRA_df$`library_strategy (click for details)`[grep(pattern = "Archer_Fusion",x = SRA_df$`library_strategy (click for details)`)]<-"OTHER"
 
+#For CCDI we have a few more changes that need to occur to values to make sure the correct information is brought over.
+SRA_df$`platform (click for details)`[grep(pattern = "Illumina",x = SRA_df$`platform (click for details)`)]<-"ILLUMINA"
+SRA_df$library_layout[grep(pattern = "Paired end",x = SRA_df$library_layout)]<-"paired"
+SRA_df$library_layout[grep(pattern = "Single end",x = SRA_df$library_layout)]<-"single"
+SRA_df$`library_source (click for details)`[grep(pattern = "DNA",x = SRA_df$`library_source (click for details)`)]<-"GENOMIC"
+SRA_df$`library_source (click for details)`[grep(pattern = "RNA",x = SRA_df$`library_source (click for details)`)]<-"TRANSCRIPTOMIC"
+
 
 ######################
 #
@@ -454,7 +461,7 @@ if ((!is.null(opt$previous_submission))){
     }
   }
   
-  SRA_df1=suppressMessages(unique(bind_rows(df_ps,SRA_df)))    
+  SRA_df=suppressMessages(unique(bind_rows(df_ps,SRA_df)))    
 
 
   if (length(unique(SRA_df$library_ID))!=length(SRA_df$library_ID)){
@@ -484,7 +491,9 @@ colnames(SRA_df)[grep(pattern = "filetype",x = colnames(SRA_df))]<-"filetype"
 #####################
 
 #Output file name based on phs_id.
-phs_id=unique(df$phs_accession)[1]
+phs_id=unique(df$acl)[1]
+phs_id=gsub(pattern = "\\[\\'",replacement = "",x = phs_id)
+phs_id=gsub(pattern = "\\'\\]",replacement = "",x = phs_id)
 output_file=paste(phs_id,
                   "_SRA_submission",
                   sep="")

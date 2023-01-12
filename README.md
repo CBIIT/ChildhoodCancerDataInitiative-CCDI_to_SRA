@@ -1,4 +1,4 @@
-# ChildhoodCancerDataInitiative-CCDI_to_SRA
+# ChildrensCancerDataInitiative-CCDI_to_SRA
 This script will take data from a validated CCDI submission manifest, and create an SRA submission file specifically for a CCDI project.
 
 To run the script on a complete and validated [CCDI validated submission template](https://github.com/CBIIT/ccdi-model/tree/main/metadata-manifest), run the following command in a terminal where R is installed for help.
@@ -37,10 +37,10 @@ The SRA submission file is being made at this time.
 
 Process Complete.
 
-The output file can be found here: ChildhoodCancerDataInitiative-CCDI_to_SRA/test_files/_SRA_submission_20230103/
+The output file can be found here: ChildrensCancerDataInitiative-CCDI_to_SRA/test_files/_SRA_submission_20230103/
 ```
 
-If there are any errors or problems with the file, it will write out the possible issues. Most of these should not occur as these submission manifests should be valid based on the [CCDI-Submission_ValidatoR](https://github.com/CBIIT/ChildhoodCancerDataInitiative-Submission_ValidatoR).
+If there are any errors or problems with the file, it will write out the possible issues. Most of these should not occur as these submission manifests should be valid based on the [CCDI-Submission_ValidatoR](https://github.com/CBIIT/ChildrensCancerDataInitiative-Submission_ValidatoR).
 
 For concatenation of a new SRA submission template onto an older submission template, the code would be:
 
@@ -51,5 +51,5 @@ The SRA submission file is being made at this time.
 
 Process Complete.
 
-The output file can be found here: ChildhoodCancerDataInitiative-CCDI_to_SRA/test_files/phs987654_SRA_submission_20230103/
+The output file can be found here: ChildrensCancerDataInitiative-CCDI_to_SRA/test_files/phs987654_SRA_submission_20230103/
 ```

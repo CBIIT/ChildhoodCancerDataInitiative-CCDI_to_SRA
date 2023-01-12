@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-#Childhood Cancer Data Initiative - CCDI_to_SRA.R
+#Childrens Cancer Data Initiative - CCDI_to_SRA.R
 
 #This script will take data from a validated CCDI submission manifest, and create an SRA submission file specifically for a CCDI project.
 

@@ -63,7 +63,7 @@ option_list = list(
 )
 
 #create list of options and values for file input
-opt_parser = OptionParser(option_list=option_list, description = "\nCCDI_to_SRA v2.0.0")
+opt_parser = OptionParser(option_list=option_list, description = "\nCCDI_to_SRA v2.0.1")
 opt = parse_args(opt_parser)
 
 #If no options are presented, return --help, stop and print the following message.
@@ -97,6 +97,14 @@ cat("The SRA submission file is being made at this time.\n")
 file_name=stri_reverse(stri_split_fixed(stri_reverse(basename(file_path)),pattern = ".", n=2)[[1]][2])
 ext=tolower(stri_reverse(stri_split_fixed(stri_reverse(basename(file_path)),pattern = ".", n=2)[[1]][1]))
 path=paste(dirname(file_path),"/",sep = "")
+
+output_file=paste(file_name,
+                  "_SRA",
+                  stri_replace_all_fixed(
+                    str = Sys.Date(),
+                    pattern = "-",
+                    replacement = ""),
+                  sep="")
 
 
 # Read in CCDI workbook, and then pull each node page out.
@@ -232,27 +240,13 @@ SRA_df$`library_strategy (click for details)`[grep(pattern = "Archer_Fusion",x =
 
 #For CCDI we have a few more changes that need to occur to values to make sure the correct information is brought over.
 SRA_df$`platform (click for details)`[grep(pattern = "Illumina",x = SRA_df$`platform (click for details)`)]<-"ILLUMINA"
-SRA_df$library_layout[grep(pattern = "Paired end",x = SRA_df$library_layout)]<-"paired"
-SRA_df$library_layout[grep(pattern = "Single end",x = SRA_df$library_layout)]<-"single"
-SRA_df$library_layout[grep(pattern = "aried end", SRA_df$library_layout)]<-"paried"
+#Fix output from CCDI to SRA, single-end -> single, paired-end -> paired
+SRA_df$library_layout[grep(pattern = "single-end", SRA_df$library_layout)]<-"single"
+SRA_df$library_layout[grep(pattern = "paired-end", SRA_df$library_layout)]<-"paired"
+SRA_df$library_layout[grep(pattern = "aired end", SRA_df$library_layout)]<-"paired"
 SRA_df$library_layout[grep(pattern = "ingle end", SRA_df$library_layout)]<-"single"
 SRA_df$`library_source (click for details)`[grep(pattern = "DNA",x = SRA_df$`library_source (click for details)`)]<-"GENOMIC"
 SRA_df$`library_source (click for details)`[grep(pattern = "RNA",x = SRA_df$`library_source (click for details)`)]<-"TRANSCRIPTOMIC"
-
-
-######################
-#
-# Double verification against template
-#
-######################
-
-#Fix all caps/ mixed caps versions of file types
-for (type_pos in 1:dim(SRA_df)[1]){
-  if (tolower(SRA_df$filetype...14[type_pos])%in%df_type$filetype){
-    SRA_df$filetype...14[type_pos]=tolower(SRA_df$filetype...14[type_pos])
-  }
-}
-
 
 #Fix the CRAI and BAI files to be index files
 #This has to be done before any rearrangements to the files occur.
@@ -262,6 +256,22 @@ SRA_df$filetype...14[grep(pattern = "bai", SRA_df$filetype...14)]<-"bam_index"
 SRA_df$filetype...14[grep(pattern = "crai", SRA_df$filetype...14)]<-"cram_index"
 SRA_df$filetype...14[grep(pattern = "tbi", SRA_df$filetype...14)]<-"vcf_index"
 
+
+######################
+#
+# Double verification against template
+#
+######################
+
+sink(paste(path,output_file,".txt",sep = ""))
+cat("The following file will note when there are unexpected values or situations that occur when converting to the SRA submission file.\n\n")
+
+#Fix all caps/ mixed caps versions of file types
+for (type_pos in 1:dim(SRA_df)[1]){
+  if (tolower(SRA_df$filetype...14[type_pos])%in%df_type$filetype){
+    SRA_df$filetype...14[type_pos]=tolower(SRA_df$filetype...14[type_pos])
+  }
+}
 
 #create a vector with all incorrect enums for removal from SRA_df
 all_incorrect_values=character(0)
@@ -297,9 +307,6 @@ if(!all(unique(SRA_df$`library_selection (click for details)`)%in%df_selection$S
 }
 
 #Check against library_layout
-#Fix output from CCDI to SRA, single-end -> single, paired-end -> paired
-SRA_df$library_layout[grep(pattern = "single-end", SRA_df$library_layout)]<-"single"
-SRA_df$library_layout[grep(pattern = "paired-end", SRA_df$library_layout)]<-"paired"
 if(!all(unique(SRA_df$library_layout)%in%df_layout$Layout)){
   incorrect_values=unique(SRA_df$library_layout)[!unique(SRA_df$library_layout)%in%df_layout$Layout]
   incorrect_values=incorrect_values[!is.na(incorrect_values)]
@@ -475,6 +482,8 @@ if ((!is.null(opt$previous_submission))){
   
 }
 
+
+sink()
 
 ####################
 #

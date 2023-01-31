@@ -234,6 +234,8 @@ SRA_df$`library_strategy (click for details)`[grep(pattern = "Archer_Fusion",x =
 SRA_df$`platform (click for details)`[grep(pattern = "Illumina",x = SRA_df$`platform (click for details)`)]<-"ILLUMINA"
 SRA_df$library_layout[grep(pattern = "Paired end",x = SRA_df$library_layout)]<-"paired"
 SRA_df$library_layout[grep(pattern = "Single end",x = SRA_df$library_layout)]<-"single"
+SRA_df$library_layout[grep(pattern = "aried end", SRA_df$library_layout)]<-"paried"
+SRA_df$library_layout[grep(pattern = "ingle end", SRA_df$library_layout)]<-"single"
 SRA_df$`library_source (click for details)`[grep(pattern = "DNA",x = SRA_df$`library_source (click for details)`)]<-"GENOMIC"
 SRA_df$`library_source (click for details)`[grep(pattern = "RNA",x = SRA_df$`library_source (click for details)`)]<-"TRANSCRIPTOMIC"
 
@@ -258,6 +260,7 @@ SRA_df$filetype...14[grep(pattern = "BAI", SRA_df$filetype...14)]<-"bam_index"
 SRA_df$filetype...14[grep(pattern = "CRAI", SRA_df$filetype...14)]<-"cram_index"
 SRA_df$filetype...14[grep(pattern = "bai", SRA_df$filetype...14)]<-"bam_index"
 SRA_df$filetype...14[grep(pattern = "crai", SRA_df$filetype...14)]<-"cram_index"
+SRA_df$filetype...14[grep(pattern = "tbi", SRA_df$filetype...14)]<-"vcf_index"
 
 
 #create a vector with all incorrect enums for removal from SRA_df

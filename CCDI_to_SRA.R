@@ -209,6 +209,39 @@ SRA_df$active_location_URL=stri_reverse(df$file_url_in_cds)
 SRA_df=separate(SRA_df,active_location_URL,c("file","active_location_URL"),sep="/",extra="merge")%>%select(-file)
 SRA_df$active_location_URL=paste(stri_reverse(SRA_df$active_location_URL),"/",sep = "")
 
+
+#To preserve the data structure of the template, if a input file is missing a column it will look in SRA_df and if it returns a null, it instead returns a column of NAs.
+
+for (col_name in colnames(df_template)){
+  if (!col_name %in% colnames(SRA_df)){
+    SRA_df[col_name]=NA
+  }
+}
+
+reorder=colnames(SRA_df)[colnames(SRA_df) %in% colnames(df_template)]
+reorder=colnames(df_template)[colnames(df_template) %in% reorder]
+
+
+SRA_df=SRA_df%>%
+  select(all_of(reorder),everything())
+
+
+#Fix issue where design description has to be at least 250 characters long. To avoid creating new data that was not supplied, we instead will add spaces onto the end of the string until 250 characters are hit, and then add one period to prevent white space cleaning from removing our spaces.
+for (row in 1:dim(SRA_df)[1]){
+  if (!is.na(SRA_df$design_description[row])){
+    slength=nchar(SRA_df$design_description[row])
+    if(slength<250){
+      addlength=250-slength
+      new_value=paste(SRA_df$design_description[row],paste(rep(x = " ",addlength),collapse = ""),".",sep = "")
+      SRA_df$design_description[row]=new_value
+    }
+  }else if (is.na(SRA_df$design_description[row])){
+    filler_val=paste(paste(rep(x = " ", 250), collapse = ""),".",sep = " ")
+    SRA_df$design_description[row]=filler_val
+  }
+}
+
+
 #If there is a row that does not contain a file, based on whether a file name is present, remove that row.
 SRA_df=SRA_df[!is.na(SRA_df$filename...15),]
 
@@ -428,24 +461,6 @@ for (row in 1:dim(library_id_count)[1]){
   }
 }
 
-#Fix issue where design description has to be at least 250 characters long. To avoid creating new data that was not supplied, we instead will add spaces onto the end of the string until 250 characters are hit, and then add one period to prevent white space cleaning from removing our spaces.
-if (is.null(SRA_df$design_description)){
-  SRA_df$design_description=NA
-}
-
-for (row in 1:dim(SRA_df)[1]){
-  if (!is.na(SRA_df$design_description[row])){
-    slength=nchar(SRA_df$design_description[row])
-    if(slength<250){
-      addlength=250-slength
-      new_value=paste(SRA_df$design_description[row],paste(rep(x = " ",addlength),collapse = ""),".",sep = "")
-      SRA_df$design_description[row]=new_value
-    }
-  }else if (is.na(SRA_df$design_description[row])){
-    filler_val=paste(paste(rep(x = " ", 250), collapse = ""),".",sep = " ")
-    SRA_df$design_description[row]=filler_val
-  }
-}
 
 
 ####################

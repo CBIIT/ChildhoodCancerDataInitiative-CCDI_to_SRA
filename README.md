@@ -11,7 +11,7 @@ Rscript --vanilla CCDI_to_SRA.R -h
 ```
 Usage: CCDI_to_SRA.R [options]
 
-CCDI_to_SRA v2.0.1
+CCDI_to_SRA v2.0.2
 
 Options:
 	-f CHARACTER, --file=CHARACTER

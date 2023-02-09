@@ -154,11 +154,11 @@ df$study_name=workbook_list['study'][[1]]['study_name'][[1]]
 SRA_df=data.frame(matrix(ncol = dim(df_template)[2],nrow=dim(df)[1]))
 
 #IF A BLANK TEMPLATE IS NOT USED, THIS PART WILL CREATE A SHIFTED OUTPUT FILE
-colnames(SRA_df)<-colnames(df_template)
+colnames(df_template)[grep(pattern = "filename...18",x = colnames(df_template))]<-"filename...15_1"
+colnames(df_template)[grep(pattern = "filetype...17",x = colnames(df_template))]<-"filetype...14_1"
+colnames(df_template)[grep(pattern = "MD5_checksum...19",x = colnames(df_template))]<-"MD5_checksum...16_1"
 
-colnames(SRA_df)[grep(pattern = "filename...18",x = colnames(SRA_df))]<-"filename...15_1"
-colnames(SRA_df)[grep(pattern = "filetype...17",x = colnames(SRA_df))]<-"filetype...14_1"
-colnames(SRA_df)[grep(pattern = "MD5_checksum...19",x = colnames(SRA_df))]<-"MD5_checksum...16_1"
+colnames(SRA_df)<-colnames(df_template)
 
 #FIX TO NON-BLANK TEMPLATE USE, DESTROY THE FILE COLUMNS PAST TWO INSTANCES
 drop_name=grep(pattern = "filename...",x = colnames(SRA_df))

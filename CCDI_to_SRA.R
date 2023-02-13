@@ -147,6 +147,13 @@ df_template_terms=suppressMessages(read_xlsx(path = template_path, sheet = "Term
 #################
 
 df=workbook_list['sequencing_file'][[1]]
+
+#If there are no sequencing data associated with the submission. Simply end the program. This will help with pipeline as it would normally error out at a point when there is no information.
+
+if (is.null(df)){
+  stop("No sequencing files were found in this submission, and the SRA generation will be skipped.")
+}
+
 df$acl=workbook_list['study_admin'][[1]]['acl'][[1]]
 df$study_name=workbook_list['study'][[1]]['study_name'][[1]]
 

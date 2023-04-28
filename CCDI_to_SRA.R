@@ -154,7 +154,12 @@ if (is.null(df)){
   stop("No sequencing files were found in this submission, and the SRA generation will be skipped.")
 }
 
-df$acl=workbook_list['study_admin'][[1]]['acl'][[1]]
+if ('acl' %in% colnames(workbook_list['study_admin'][[1]])){
+  df$acl=workbook_list['study_admin'][[1]]['acl'][[1]]
+}else if ('acl' %in% colnames(workbook_list['study'][[1]])){
+  df$acl=workbook_list['study'][[1]]['acl'][[1]]
+}
+
 df$study_name=workbook_list['study'][[1]]['study_name'][[1]]
 
 #create data frame with the columns of the dbGaP template and the rows of the CCDI template

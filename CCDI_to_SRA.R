@@ -295,10 +295,10 @@ SRA_df$`library_source (click for details)`[grep(pattern = "RNA",x = SRA_df$`lib
 
 #Fix the CRAI and BAI files to be index files
 #This has to be done before any rearrangements to the files occur.
-SRA_df$filetype...14[grep(pattern = "BAI", SRA_df$filetype...14)]<-"bam_index"
-SRA_df$filetype...14[grep(pattern = "CRAI", SRA_df$filetype...14)]<-"cram_index"
-SRA_df$filetype...14[grep(pattern = "bai", SRA_df$filetype...14)]<-"bam_index"
-SRA_df$filetype...14[grep(pattern = "crai", SRA_df$filetype...14)]<-"cram_index"
+SRA_df$filetype...14[grep(pattern = "BAI", SRA_df$filetype...14)]<-"bai"
+SRA_df$filetype...14[grep(pattern = "CRAI", SRA_df$filetype...14)]<-"crai"
+# SRA_df$filetype...14[grep(pattern = "bai", SRA_df$filetype...14)]<-"bam_index"
+# SRA_df$filetype...14[grep(pattern = "crai", SRA_df$filetype...14)]<-"cram_index"
 SRA_df$filetype...14[grep(pattern = "tbi", SRA_df$filetype...14)]<-"vcf_index"
 
 

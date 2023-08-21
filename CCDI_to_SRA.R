@@ -22,7 +22,7 @@
 ##################
 
 #List of needed packages
-list_of_packages=c("dplyr","tidyr","readr","stringi","readxl","openxlsx","xlsx","janitor","optparse","jsonlite","tools")
+list_of_packages=c("dplyr","tidyr","readr","stringi","readxl","openxlsx","janitor","optparse","jsonlite","tools")
 
 #Based on the packages that are present, install ones that are required.
 new.packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
@@ -32,7 +32,6 @@ suppressMessages(if(length(new.packages)) install.packages(new.packages, repos =
 suppressMessages(library(dplyr,verbose = F))
 suppressMessages(library(tidyr,verbose = F))
 suppressMessages(library(readr,verbose = F))
-suppressMessages(library(xlsx,verbose = F))
 suppressMessages(library(readxl,verbose = F))
 suppressMessages(library(openxlsx,verbose = F))
 suppressMessages(library(optparse,verbose = F))

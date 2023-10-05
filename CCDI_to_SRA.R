@@ -292,6 +292,10 @@ SRA_df$library_layout[grep(pattern = "ingle end", SRA_df$library_layout)]<-"sing
 SRA_df$`library_source (click for details)`[grep(pattern = "DNA",x = SRA_df$`library_source (click for details)`)]<-"GENOMIC"
 SRA_df$`library_source (click for details)`[grep(pattern = "RNA",x = SRA_df$`library_source (click for details)`)]<-"TRANSCRIPTOMIC"
 
+SRA_df$`library_source (click for details)`=toupper(SRA_df$`library_source (click for details)`)
+
+SRA_df$`library_selection (click for details)`[grep(pattern = "Random",x = SRA_df$`library_selection (click for details)`)]<-"RANDOM"
+
 #Fix the CRAI and BAI files to be index files
 #This has to be done before any rearrangements to the files occur.
 SRA_df$filetype...14[grep(pattern = "BAI", SRA_df$filetype...14)]<-"bai"

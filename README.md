@@ -1,4 +1,4 @@
-# ChildhoodCancerDataInitiative-CCDI_to_SRA
+# ChildhoodCancerDataInitiative-CCDI_to_SRA (ARCHIVED)
 This script will take data from a validated CCDI submission manifest, and create an SRA submission file specifically for a CCDI project.
 
 To run the script on a complete and validated [CCDI validated submission template](https://github.com/CBIIT/ccdi-model/tree/main/metadata-manifest), run the following command in a terminal where R is installed for help.
